@@ -158,9 +158,58 @@ Uses physically based rendering principles (PBR) which is the standard in the in
 
 const material = new THREE.MeshStandardMaterial()
 
-gradientTexture.metalness = 0.45
-gradientTexture.roughness = 0.65
+material.metalness = 0.45
+material.roughness = 0.65
+
+//Add a Map
+material.map = doorColorTexture
+
+//Add Ambient Occlusion: Will add details in the crevices like a door hinge
+
+material.aoMap = doorAmbientOcclusionTexture 
+material.aoMapIntensity = 5
+
+//Add displacement Map: Increases height; however, we need more subdivisions
+
+material.displacementMap = doorHeightTexture
+material.displacementScale = 0.2
+
+//Add Metalness and Roughness off image map
+
+material.metalnessMap = doorMetalnessTexture
+material.roughnessMap = doorRoughnessTexture
+
+//Normal Map
+
+material.normalMap = doorNormalTexture
+material.normalScale.set(0.5, 0.5)
+
+//Alpha Map
+
+material.transparent = true
+material.alphaMap = doorAlphaTexture
+
 
 ```
 
-#### We will initialize a debugger again  
+## Loading Environment Map
+
+[Polyhaven](https://polyhaven.com/) for environment maps
+
+```javascript
+
+import {RGBELoader} from 'three/examples/jsm/loaders/RGBELoader.js'
+
+//Initialize Environment Map after creating scene
+
+const rgbeLoader = new RGBELoader()
+
+rgbeLoader.load('./textures/environmentMap/2k.hdr', (environmentMap) => {
+    
+    environmentMap.mapping = THREE.EquirectangularReflectionMapping
+
+    scene.background = environmentMap
+    scene.environment = environmentMap
+})
+
+```

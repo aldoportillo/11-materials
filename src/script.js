@@ -1,5 +1,14 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+import GUI from 'lil-gui'
+import {RGBELoader} from 'three/examples/jsm/loaders/RGBELoader.js'
+
+/**
+ * 
+ * Debug
+ */
+
+const gui = new GUI()
 
 /**
  * Base
@@ -38,8 +47,29 @@ const scene = new THREE.Scene()
 //Mesh Normal Material
 const material = new THREE.MeshStandardMaterial()
 
-gradientTexture.metalness = 0.45
-gradientTexture.roughness = 0.65
+material.map = doorColorTexture
+material.aoMap = doorAmbientOcclusionTexture //AmbientOcclusion:
+material.aoMapIntensity = 1
+
+material.displacementMap = doorHeightTexture
+material.displacementScale = 0.1
+
+material.metalnessMap = doorMetalnessTexture
+material.roughnessMap = doorRoughnessTexture
+
+material.normalMap = doorNormalTexture
+material.normalScale.set(0.5, 0.5)
+
+material.transparent = true
+material.alphaMap = doorAlphaTexture
+
+// material.side = THREE.DoubleSide
+
+material.metalness = 1
+material.roughness = 1
+
+gui.add(material, 'metalness').min(0).max(1).step(0.001)
+gui.add(material, 'roughness').min(0).max(1).step(0.001)
 
 
 //Create Shapes
@@ -52,7 +82,7 @@ const sphere = new THREE.Mesh(
 sphere.position.x = -1.5
 
 const plane = new THREE.Mesh(
-    new THREE.PlaneGeometry(1, 1),
+    new THREE.PlaneGeometry(1, 1, 100, 100),
     material
 )
 
@@ -69,13 +99,26 @@ scene.add(sphere, plane, torus)
  * Light
  */
 
-const ambientLight = new THREE.AmbientLight(0xffffff, 1)
-scene.add(ambientLight)
+// const ambientLight = new THREE.AmbientLight(0xffffff, 1)
+// scene.add(ambientLight)
 
-const pointLight = new THREE.PointLight(0xffffff, 30)
-scene.add(pointLight)
-pointLight.position.set(2,3,4)
+// const pointLight = new THREE.PointLight(0xffffff, 30)
+// scene.add(pointLight)
+// pointLight.position.set(2,3,4)
 
+/**
+ * Initialize Environment Map
+ */
+
+const rgbeLoader = new RGBELoader()
+
+rgbeLoader.load('./textures/environmentMap/2k.hdr', (environmentMap) => {
+    
+    environmentMap.mapping = THREE.EquirectangularReflectionMapping
+
+    scene.background = environmentMap
+    scene.environment = environmentMap
+})
 /**
  * Sizes
  */
@@ -93,6 +136,7 @@ window.addEventListener('resize', () =>
     // Update camera
     camera.aspect = sizes.width / sizes.height
     camera.updateProjectionMatrix()
+
 
     // Update renderer
     renderer.setSize(sizes.width, sizes.height)
