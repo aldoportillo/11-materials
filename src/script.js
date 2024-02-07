@@ -47,21 +47,21 @@ const scene = new THREE.Scene()
 //Mesh Normal Material
 const material = new THREE.MeshStandardMaterial()
 
-material.map = doorColorTexture
-material.aoMap = doorAmbientOcclusionTexture //AmbientOcclusion:
-material.aoMapIntensity = 1
+// material.map = doorColorTexture
+// material.aoMap = doorAmbientOcclusionTexture //AmbientOcclusion:
+// material.aoMapIntensity = 1
 
-material.displacementMap = doorHeightTexture
-material.displacementScale = 0.1
+// material.displacementMap = doorHeightTexture
+// material.displacementScale = 0.1
 
-material.metalnessMap = doorMetalnessTexture
-material.roughnessMap = doorRoughnessTexture
+// material.metalnessMap = doorMetalnessTexture
+// material.roughnessMap = doorRoughnessTexture
 
-material.normalMap = doorNormalTexture
-material.normalScale.set(0.5, 0.5)
+// material.normalMap = doorNormalTexture
+// material.normalScale.set(0.5, 0.5)
 
-material.transparent = true
-material.alphaMap = doorAlphaTexture
+// material.transparent = true
+// material.alphaMap = doorAlphaTexture
 
 // material.side = THREE.DoubleSide
 
@@ -71,6 +71,26 @@ material.roughness = 1
 gui.add(material, 'metalness').min(0).max(1).step(0.001)
 gui.add(material, 'roughness').min(0).max(1).step(0.001)
 
+
+// material.clearcoat = 1
+// material.clearcoatRoughness = 0
+
+// material.sheen = 1
+// material.sheenRoughness = 0.25
+// material.sheenColor.set(1, 1, 1)
+
+// material.iridescence = 1
+// material.iridescenceIOR = 1
+// material.iridescenceThicknessRange[100,800]
+
+// Transmission
+// material.transmission = 1
+// material.ior = 1.5
+// material.thickness = 0.5
+
+// gui.add(material, 'transmission').min(0).max(1).step(0.0001)
+// gui.add(material, 'ior').min(1).max(10).step(0.0001)
+// gui.add(material, 'thickness').min(0).max(1).step(0.0001)
 
 //Create Shapes
 

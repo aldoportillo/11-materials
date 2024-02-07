@@ -152,8 +152,6 @@ material.gradientMap = gradientTexture
 
 Uses physically based rendering principles (PBR) which is the standard in the industry. This has a better algorithm for metalness and roughness.
 
-
-
 ```javascript
 
 const material = new THREE.MeshStandardMaterial()
@@ -192,6 +190,40 @@ material.alphaMap = doorAlphaTexture
 
 ```
 
+### MeshPhysicalMaterial
+
+Extension of MeshPhysicalMaterial with paramaters: clearcoat, sheen, iridesence, transmission
+
+```javascript
+
+const material = new THREE.MeshPhysicalMaterial()
+
+//ClearCoat - thin layer of vanish on top of material
+material.clearcoat = 1
+material.clearcoatRoughness = 0
+
+//Sheen - highlights material when seen from narrow angle. Like fabric.
+
+material.sheen = 1
+material.sheenRoughness = 0.25
+material.sheenColor.set(1, 1, 1)
+
+//Iridesence - Creates color artifacts like disks or soap bubbles
+
+material.iridescence = 1
+material.iridescenceIOR = 1
+material.iridescenceThicknessRange[100,800]
+
+//Transmission - will allow light to go through material but it will be deformed  by the material
+
+gui.add(material, 'transmission').min(0).max(1).step(0.0001)
+gui.add(material, 'ior').min(1).max(10).step(0.0001)
+gui.add(material, 'thickness').min(0).max(1).step(0.0001)
+
+
+
+```
+
 ## Loading Environment Map
 
 [Polyhaven](https://polyhaven.com/) for environment maps
@@ -213,3 +245,10 @@ rgbeLoader.load('./textures/environmentMap/2k.hdr', (environmentMap) => {
 })
 
 ```
+
+## IOR - Index of Refraction
+
+Diamond - 2.417
+Water - 1.333
+Air - 1.00293
+[more](https://en.wikipedia.org/wiki/Refractive_index)
